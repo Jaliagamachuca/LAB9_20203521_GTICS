@@ -1,10 +1,132 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab9 Julio Aliaga 20203521</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    #laberinto {
+      display: grid;
+      grid-template-columns: repeat(10, 50px);
+      grid-template-rows: repeat(10, 50px);
+      gap: 2px;
+      margin: 20px auto;
+      width: fit-content;
+    }
+    .casilla {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #ccc;
+    }
+    .oculto {
+      background-color: #fff;
+    }
+    .visible {
+      background-color: #f0f0f0;
+    }
+    .inicio {
+      background-color: yellow;
+    }
+    .final {
+      background-color: green;
+    }
+    .libre {
+      background-color: lightblue;
+    }
+    .agujero {
+      background-color: black;
+    }
+    .suplantacion {
+      background-color: red;
+    }
+    .copia {
+      background-color: blue;
+    }
+    .plagio {
+      background-color: purple;
+    }
+    #iniciarJuego, #subirLaberinto {
+      background-color: green;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin: 10px;
+    }
+    #iniciarJuego:hover, #subirLaberinto:hover {
+      background-color: darkgreen;
+    }
+    #mapaInput {
+      display: none;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#subirLaberinto').on('click', function() {
+        $('#mapaInput').show();
+      });
+
+      $('#iniciarJuego').on('click', function() {
+        const mapaTexto = $('#mapaText').val();
+        const mapa = mapaTexto.split('\n').map(row => row.split(''));
+        crearTablero(mapa);
+        $('#mapaInput').hide();
+        $('#laberinto').show();
+      });
+
+      function crearTablero(mapa) {
+        $('#laberinto').empty();
+        for (let y = 0; y < mapa.length; y++) {
+          for (let x = 0; x < mapa[y].length; x++) {
+            let casilla = $('<div>').addClass('casilla oculto');
+            switch (mapa[y][x]) {
+              case 'I':
+                casilla.addClass('inicio visible');
+                break;
+              case 'F':
+                casilla.addClass('final visible');
+                break;
+              case 'S':
+                casilla.addClass('suplantacion');
+                break;
+              case 'C':
+                casilla.addClass('copia');
+                break;
+              case 'P':
+                casilla.addClass('plagio');
+                break;
+              case 'A':
+                casilla.addClass('agujero');
+                break;
+              case 'O':
+                casilla.addClass('libre');
+                break;
+            }
+            $('#laberinto').append(casilla);
+          }
+        }
+      }
+    });
+  </script>
 </head>
 <body>
-
+<h1>El Juego del Laberinto</h1>
+<button id="subirLaberinto">Subir laberinto</button>
+<div id="mapaInput">
+  <textarea id="mapaText" rows="10" cols="50"></textarea><br>
+  <button id="iniciarJuego">Iniciar el juego</button>
+</div>
+<div id="laberinto" style="display: none;"></div>
 </body>
 </html>
+
